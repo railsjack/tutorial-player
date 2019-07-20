@@ -39,7 +39,7 @@ var TutorialList = function () {
     };
 
     var _load = function(){
-        
+        _load_list();
     };
 
     var _load_list = function(){
