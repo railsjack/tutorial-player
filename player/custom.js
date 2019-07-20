@@ -104,7 +104,8 @@ var TutorialList = function () {
     }
     return {
         load: _load,
-        set_dir: _set_dir
+        set_dir: _set_dir,
+        get_dir: _get_dir
     }
 }();
 
