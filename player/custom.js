@@ -39,24 +39,32 @@ var TutorialList = function () {
     };
 
     var _load = function () {
-        _load_list();
+        _set_dir();
+
+        var dir = _get_dir();
     };
 
-    var _load_list = function () {
+    var _set_dir = function () {
         const cached_data_dir = localStorage.getItem('data_dir')
-        alert('localStorage data_dir: '+ cached_data_dir)
-
-        const app = require('electron').remote.app
-        var basepath = app.getAppPath();
-        const dialog = require('electron').remote.dialog
-        const data_dir = dialog.showOpenDialog(null, {
-            properties: ['openDirectory'],
-            defaultPath: basepath
-        })
-        if (data_dir){
-            localStorage.setItem('data_dir', data_dir)
+        if (!cached_data_dir) {
+            const app = require('electron').remote.app
+            var basepath = app.getAppPath();
+            const dialog = require('electron').remote.dialog
+            const data_dir = dialog.showOpenDialog(null, {
+                properties: ['openDirectory'],
+                defaultPath: basepath
+            })
+            if (data_dir) {
+                localStorage.setItem('data_dir', data_dir)
+            }
         }
     };
+
+    var _get_dir = function () {
+        const cached_data_dir = localStorage.getItem('data_dir')
+        return cached_data_dir;
+    };
+    
 
     var _load_html = function () {
 
@@ -95,7 +103,7 @@ var TutorialList = function () {
 
 
 document.ready(function (event) {
-    
+
     tutorialList.addEventListener('change', function (e) {
         Player.play(e.target.value)
     });
