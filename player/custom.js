@@ -20,10 +20,10 @@ document.ready = function (callback) {
 
 var Player = function () {
     var _play = function (index) {
-        video_player.src = 'D:/torrent-downloads/react-native-26G/ReactNativeCourse(2nd)/videos/files/' + mp4_files[index]
-        playerCaption.src = 'D:/torrent-downloads/react-native-26G/ReactNativeCourse(2nd)/videos/files/' + vtt_files[index]
+        var base_dir = 
+        video_player.src = base_dir + '/' + mp4_files[index]
+        playerCaption.src = base_dir + '/' + vtt_files[index]
         video_player.textTracks[0].mode = 'showing';
-
         video_player.play();
     }
     return {
@@ -39,32 +39,39 @@ var TutorialList = function () {
     };
 
     var _load = function () {
-        _set_dir();
+        var cached_data_dir = _get_dir();
+        if(cached_data_dir) {
+            _load_script(cached_data_dir + '/list_mp4.js');
+            _load_script(cached_data_dir + '/list_vtt.js');
+            setTimeout(_load_html, 500);
+        }
+    };
 
-        var dir = _get_dir();
+    var _load_script = async function (path) {
+        var script = document.createElement('script')
+        script.src = path
+        document.getElementsByTagName('head')[0].appendChild(script);
     };
 
     var _set_dir = function () {
-        const cached_data_dir = localStorage.getItem('data_dir')
-        if (!cached_data_dir) {
-            const app = require('electron').remote.app
-            var basepath = app.getAppPath();
-            const dialog = require('electron').remote.dialog
-            const data_dir = dialog.showOpenDialog(null, {
-                properties: ['openDirectory'],
-                defaultPath: basepath
-            })
-            if (data_dir) {
-                localStorage.setItem('data_dir', data_dir)
-            }
+        const app = require('electron').remote.app
+        var basepath = app.getAppPath();
+        const dialog = require('electron').remote.dialog
+        const data_dir = dialog.showOpenDialog(null, {
+            properties: ['openDirectory'],
+            defaultPath: basepath
+        })
+        if (data_dir) {
+            localStorage.setItem('data_dir', data_dir)
         }
+        _load();
     };
 
     var _get_dir = function () {
         const cached_data_dir = localStorage.getItem('data_dir')
         return cached_data_dir;
     };
-    
+
 
     var _load_html = function () {
 
@@ -96,7 +103,8 @@ var TutorialList = function () {
         tutorialList.appendChild(optionNode)
     }
     return {
-        load: _load
+        load: _load,
+        set_dir: _set_dir
     }
 }();
 
