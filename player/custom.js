@@ -38,21 +38,28 @@ var TutorialList = function () {
         return ret.replace(/\-/gi, ' ');
     };
 
-    var _load = function(){
+    var _load = function () {
         _load_list();
     };
 
-    var _load_list = function(){
+    var _load_list = function () {
+        const cached_data_dir = localStorage.getItem('data_dir')
+        alert('localStorage data_dir: '+ cached_data_dir)
+
+        const app = require('electron').remote.app
+        var basepath = app.getAppPath();
         const dialog = require('electron').remote.dialog
-        const files = dialog.showOpenDialog(null, { 
-            properties: [ 'openDirectory' ],
-            defaultPath: '.'
+        const data_dir = dialog.showOpenDialog(null, {
+            properties: ['openDirectory'],
+            defaultPath: basepath
         })
-        console.log(files);
+        if (data_dir){
+            localStorage.setItem('data_dir', data_dir)
+        }
     };
 
     var _load_html = function () {
-    
+
         var temp_vtt_file_dir = '';
         var optionNode;
 
@@ -88,7 +95,7 @@ var TutorialList = function () {
 
 
 document.ready(function (event) {
-    TutorialList.load()
+    
     tutorialList.addEventListener('change', function (e) {
         Player.play(e.target.value)
     });
