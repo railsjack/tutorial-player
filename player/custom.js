@@ -20,7 +20,7 @@ document.ready = function (callback) {
 
 var Player = function () {
     var _play = function (index) {
-        var base_dir = _get_dir();
+        var base_dir = TutorialList.get_dir();
         video_player.src = base_dir + '/' + mp4_files[index]
         playerCaption.src = base_dir + '/' + vtt_files[index]
         video_player.textTracks[0].mode = 'showing';
