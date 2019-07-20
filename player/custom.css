@@ -1,0 +1,11 @@
+.tutorial-player {
+    width: 50%;}
+    .tutorial-player .list-wrapper {
+        width: 100%; }
+        .tutorial-player .list-wrapper .list{
+            font-size: 12pt;
+            padding: 3px;
+            width: 100%;}
+        .tutorial-player .player-wrapper {
+        width: 100%;
+    }
