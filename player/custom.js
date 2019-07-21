@@ -25,6 +25,7 @@ var Player = function () {
         playerCaption.src = base_dir + '/' + vtt_files[index]
         video_player.textTracks[0].mode = 'showing';
         video_player.play();
+        video_player.focus();
     }
     return {
         play: _play
@@ -116,6 +117,8 @@ document.ready(function (event) {
     tutorialList.addEventListener('change', function (e) {
         Player.play(e.target.value)
     });
+
+    TutorialList.load();
 
 });
 
