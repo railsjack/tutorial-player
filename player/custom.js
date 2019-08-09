@@ -19,13 +19,29 @@ document.ready = function (callback) {
 };
 
 var Player = function () {
-    var _play = function (index) {
+    var _play = (index, auto_play = true) => {
         var base_dir = TutorialList.get_dir();
+        video_player.preload = true
         video_player.src = base_dir + '/' + mp4_files[index]
         playerCaption.src = base_dir + '/' + vtt_files[index]
-        video_player.textTracks[0].mode = 'showing';
-        video_player.play();
-        video_player.focus();
+        video_player.textTracks[0].mode = 'showing'
+        video_player.ontimeupdate = () => {
+            if (video_player.currentTime > 0) {
+                localStorage.setItem('currentTime', video_player.currentTime)
+            }
+        };
+        video_player.focus()
+
+        setTimeout(() => {
+            var currentTime;
+            if (currentTime = localStorage.getItem('currentTime')) {
+                video_player.currentTime = parseFloat(currentTime)
+            }
+        }, 1000)
+
+        if (auto_play) {
+            video_player.play()
+        }
     }
     return {
         play: _play
@@ -40,11 +56,23 @@ var TutorialList = function () {
     };
 
     var _load = function () {
+        tutorialList.addEventListener('change', function (e) {
+            Player.play(e.target.value)
+            localStorage.setItem('playedIndex', tutorialList.selectedIndex)
+        });
+
         var cached_data_dir = _get_dir();
         if (cached_data_dir) {
             _load_script(cached_data_dir + '/list_mp4.js');
             _load_script(cached_data_dir + '/list_vtt.js');
-            setTimeout(_load_html, 500);
+            setTimeout(() => {
+                _load_html();
+                var playedIndex;
+                if (playedIndex = localStorage.getItem('playedIndex')) {
+                    tutorialList.selectedIndex = playedIndex;
+                    Player.play(tutorialList.options[playedIndex].value, false);
+                }
+            }, 500)
         }
     };
 
@@ -74,9 +102,7 @@ var TutorialList = function () {
     };
 
     var _clear_html = function () {
-        while (tutorialList.childNodes.length > 0) {
-            tutorialList.removeChild();
-        }
+        tutorialList.innerHTML = ''
     };
 
     var _load_html = function () {
@@ -121,11 +147,8 @@ var TutorialList = function () {
 
 document.ready(function (event) {
 
-    tutorialList.addEventListener('change', function (e) {
-        Player.play(e.target.value)
-    });
-
     TutorialList.load();
+
 
 });
 
