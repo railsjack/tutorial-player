@@ -41,7 +41,7 @@ var TutorialList = function () {
 
     var _load = function () {
         var cached_data_dir = _get_dir();
-        if(cached_data_dir) {
+        if (cached_data_dir) {
             _load_script(cached_data_dir + '/list_mp4.js');
             _load_script(cached_data_dir + '/list_vtt.js');
             setTimeout(_load_html, 500);
@@ -56,7 +56,7 @@ var TutorialList = function () {
 
     var _set_dir = function () {
         const app = require('electron').remote.app
-        var basepath = app.getAppPath();
+        var basepath = _get_dir() || app.getAppPath();
         const dialog = require('electron').remote.dialog
         const data_dir = dialog.showOpenDialog(null, {
             properties: ['openDirectory'],
@@ -73,8 +73,15 @@ var TutorialList = function () {
         return cached_data_dir;
     };
 
+    var _clear_html = function () {
+        while (tutorialList.childNodes.length > 0) {
+            tutorialList.removeChild();
+        }
+    };
 
     var _load_html = function () {
+
+        _clear_html();
 
         var temp_vtt_file_dir = '';
         var optionNode;
