@@ -89,15 +89,15 @@ class Player {
 
         this.playerUI.focus()
 
-        setTimeout(() => {
-            var currentTime
-            if (currentTime = Helper.getConf('currentTime')) {
-                this.playerUI.currentTime = parseFloat(currentTime)
-            }
-        }, 1000)
-
         if (auto_play) {
             this.playerUI.play()
+        } else {
+            setTimeout(() => {
+                var currentTime
+                if (currentTime = Helper.getConf('currentTime')) {
+                    this.playerUI.currentTime = parseFloat(currentTime)
+                }
+            }, 1000)
         }
     }
 }
@@ -111,7 +111,6 @@ class TutorialList {
         this.selectorButton.addEventListener('click', (e) => {
             this.setDir()
         })
-        this.bindEvents()
     }
 
     bindEvents = (evName, callback) => {
