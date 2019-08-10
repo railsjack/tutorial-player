@@ -205,7 +205,7 @@ document.ready(async (event) => {
     tutorialList.bindEvents('change', (e) => {
         Helper.setConf('currentTime', 0)
         player.play(tutorialList.selectedValue())
-        Helper.setConf('playedIndex', this.UI.selectedIndex)
+        Helper.setConf('playedIndex', tutorialList.getIndex())
     })
 
     player.bindEvents('onended', (args) => {
