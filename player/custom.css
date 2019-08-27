@@ -28,6 +28,7 @@ html, body {
             background: rgba(0,0,0,0.5);
             margin: 0 auto;}
         .tutorial-player .player-wrapper .seekbar {
+            display: none;
             width: calc(100% - 65px); height: 5px;
             background-color: #ddd; cursor: pointer;
             border-radius: 3px;
