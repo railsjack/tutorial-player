@@ -8,10 +8,14 @@
 
 <body>
 
+    <div id="custom-seekbar">
+        <span></span>
+    </div>
+
     <div class="tutorial-player">
         <div class="list-wrapper">
             <select id="tutorialList" class="list"></select>
-            <button id="selectListBtn" class="list-load-button" >...</button>
+            <button id="selectListBtn" class="list-load-button">...</button>
         </div>
         <div class="player-wrapper">
             <div id="video_title" class="video-title"></div>
@@ -20,6 +24,9 @@
                 <track kind="captions" id="playerCaption" src="" srclang="en" label="English">
                 </track>
             </video>
+            <div id="seekbar" class="seekbar">
+                <span id="seekbar_pos" class="seekbar-pos"></span>
+            </div>
         </div>
     </div>
 

@@ -17,6 +17,7 @@ html, body {
             border: solid 1px #aaa;
             width: 25px; height: 25px; float: right;}
     .tutorial-player .player-wrapper {
+        position: relative;
         width: 100%; height: calc(100% - 33px); }
         .tutorial-player .player-wrapper .video-title {
             width: 80%; 
@@ -26,3 +27,16 @@ html, body {
             text-align: center;
             background: rgba(0,0,0,0.5);
             margin: 0 auto;}
+        .tutorial-player .player-wrapper .seekbar {
+            width: calc(100% - 65px); height: 5px;
+            background-color: #ddd; cursor: pointer;
+            border-radius: 3px;
+            margin: 0 auto;
+            position: relative;
+            bottom: 30px; }
+            .tutorial-player .player-wrapper .seekbar .seekbar-pos {
+                position: absolute; left: calc(0% - 7px); top: -5px;
+                width: 15px; height: 15px;
+                border-radius: 50%; 
+                background-color: white; }
+    
