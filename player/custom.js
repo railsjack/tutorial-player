@@ -64,6 +64,24 @@ class Player {
         this.playerUI = document.getElementById('video_player')
         this.captionUI = document.getElementById('playerCaption')
         this.titleUI = document.getElementById('video_title')
+
+        return;
+		new MediaElementPlayer(this.playerUI, {
+			stretching: 'auto',
+			pluginPath: 'player/media-elements/build/',
+			success: function (media) {
+				var renderer = document.getElementById(media.id + '-rendername');
+
+				media.addEventListener('loadedmetadata', function () {
+					
+				});
+
+				media.addEventListener('error', function (e) {
+					
+				});
+			}
+		});
+
     }
 
     bindEvents = (evName, callback) => {
@@ -144,6 +162,9 @@ class TutorialList {
     }
 
     setDir = function () {
+        // const win = require('electron').remote.getCurrentWindow();
+        // win.setFullScreen(true);
+        // return;
         const app = require('electron').remote.app
         var basepath = Helper.getListDir() || app.getAppPath()
         const dialog = require('electron').remote.dialog

@@ -4,6 +4,7 @@
 <head>
     <title>React Native Tutorial</title>
     <link rel="stylesheet" type="text/css" href="player/custom.css?v1" />
+    <link rel="stylesheet" href="player/media-element/build/mediaelementplayer.css">
 </head>
 
 <body>
@@ -19,19 +20,20 @@
         </div>
         <div class="player-wrapper">
             <div id="video_title" class="video-title"></div>
-            <video id="video_player" class="player" controls width="100%" height="100%" poster="" preload="none">
+            <video id="video_player" controls class="player" width="100%" height="100%" poster="" preload="none">
                 <source src="" type='video/mp4' />
                 <track kind="captions" id="playerCaption" src="" srclang="en" label="English">
                 </track>
             </video>
-            <div id="seekbar" class="seekbar">
+            <!-- <div id="seekbar" class="seekbar">
                 <span id="seekbar_pos" class="seekbar-pos"></span>
-            </div>
+            </div> -->
         </div>
     </div>
 
 </body>
 
+<script src="player/media-element/build/mediaelement-and-player.js"></script>
 <script src="player/custom.js?v3"></script>
 
 </html>

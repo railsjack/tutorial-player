@@ -25,7 +25,7 @@ function initialize () {
       title: app.getName(),
       webPreferences: {
         nodeIntegration: true,
-        devTools: false
+        devTools: true
       }
     }
 
