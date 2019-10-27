@@ -2,6 +2,7 @@ module.exports = class Helper {
   static validateTitle = title => {
     var ret = title;
     ret = ret.replace(/\.vtt/gi, "");
+    ret = ret.replace(/\.srt/gi, "");
     return ret.replace(/\-/gi, " ");
   };
 
@@ -24,6 +25,7 @@ module.exports = class Helper {
     let ret = path.replace(/[\\\/]/g, " > ");
     ret = ret.replace(/\.mp4/g, "");
     ret = ret.replace(/\.vtt/g, "");
+    ret = ret.replace(/\.srt/g, "");
     return ret.replace(/[^A-Za-z0-9\.\>]/g, " ");
   };
 

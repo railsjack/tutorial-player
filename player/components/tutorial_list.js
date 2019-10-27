@@ -3,7 +3,11 @@ module.exports = class TutorialList {
     this.UI = document.getElementById("tutorialList");
     this.selectorButton = document.getElementById("selectListBtn");
     this.selectorButton.addEventListener("click", e => {
-      this.setDir();
+      this.setDir(() => {
+        // load();
+        alert("The list file was imported sucessfully!");
+        location.reload();
+      });
     });
   }
 
@@ -15,7 +19,7 @@ module.exports = class TutorialList {
     var cached_list_dir = Helper.getListDir();
     if (cached_list_dir) {
       await Helper.loadScript(cached_list_dir + "/list_mp4.js");
-      await Helper.loadScript(cached_list_dir + "/list_vtt.js");
+      await Helper.loadScript(cached_list_dir + "/list_subtitle.js");
 
       await this.loadOptionTags();
     }
@@ -39,7 +43,7 @@ module.exports = class TutorialList {
     }
   };
 
-  setDir = function() {
+  setDir = function(cb) {
     // const win = require('electron').remote.getCurrentWindow();
     // win.setFullScreen(true);
     // return;
@@ -53,7 +57,7 @@ module.exports = class TutorialList {
     if (list_dir) {
       Helper.setConf("list_dir", list_dir);
     }
-    load();
+    cb();
   };
 
   clearHtml = function() {
@@ -63,7 +67,7 @@ module.exports = class TutorialList {
   loadOptionTags = () => {
     this.clearHtml();
 
-    let temp_vtt_file_dir = "";
+    let temp_subtitle_dir = "";
     let optionNode;
 
     optionNode = document.createElement("option");
@@ -71,27 +75,31 @@ module.exports = class TutorialList {
     optionNode.innerHTML = "Select a video to play";
     this.UI.appendChild(optionNode);
 
-    for (var k in vtt_files) {
-      var vtt_file = vtt_files[k];
-      var vtt_file_dir = vtt_file.split(/\//gi)[0];
+    for (var k in subtitles) {
+      var subtitle = subtitles[k];
+      var subtitle_dir = subtitle.split(/\//gi)[0];
 
-      if (vtt_file.indexOf("/") > -1 && vtt_file_dir != temp_vtt_file_dir) {
-        optionNode = document.createElement("optgroup");
-        optionNode.label = Helper.validateTitle(vtt_file_dir);
-        this.UI.appendChild(optionNode);
+      var optionText = "";
+
+      if (subtitle.indexOf("/") > -1) {
+        if (subtitle_dir != temp_subtitle_dir) {
+          optionNode = document.createElement("optgroup");
+          optionNode.label = Helper.validateTitle(subtitle_dir);
+          this.UI.appendChild(optionNode);
+        }
+        optionText = Helper.validateTitle(
+          subtitle.replace(subtitle_dir + "/", "&nbsp;&nbsp;&nbsp;")
+        );
+      } else {
+        optionText = subtitle.substr(0, subtitle.length - 4);
       }
 
       optionNode = document.createElement("option");
+      optionNode.innerHTML = optionText;
+
       optionNode.value = k;
-      if (vtt_file.indexOf("/") > -1){
-        optionNode.innerHTML = Helper.validateTitle(
-          vtt_file.replace(vtt_file_dir + "/", "&nbsp;&nbsp;&nbsp;")
-        );
-      } else {
-        optionNode.innerHTML = vtt_file;
-      }
       this.UI.appendChild(optionNode);
-      temp_vtt_file_dir = vtt_file_dir;
+      temp_subtitle_dir = subtitle_dir;
     }
 
     this.UI.appendChild(optionNode);

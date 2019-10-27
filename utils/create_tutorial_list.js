@@ -19,44 +19,38 @@ function naturalSort(myArray) {
   return myArray.sort(collator.compare);
 }
 
-function validateVTT(mp4_files, vtt_files) {
-	var new_vtt_files = [];
-  for( var i = 0; i < mp4_files.length; i++ ) {
-		var mp4_file = mp4_files[i];
-    var vtt_file = mp4_file.substr(0, mp4_file.length - 4) + ".vtt";
-    var srt_file = mp4_file.substr(0, mp4_file.length - 4) + ".srt";
-    if (vtt_files.indexOf(vtt_file) > -1) {
-      new_vtt_files.push(vtt_file);
-    } else if (vtt_files.indexOf(srt_file) > -1) {
-      new_vtt_files.push(srt_file);
-    } else {
-      new_vtt_files.push(vtt_file);
-    }
-  }
-  return new_vtt_files;
+function generateSubtitle(mp4_files, prefix) {
+  var subtitle_files = [];
+  mp4_files.map(mp4_file => {
+    subtitle_files.push(mp4_file.substr(0, mp4_file.length - 4) + "." + prefix);
+  });
+  return subtitle_files;
 }
 
 module.exports = (dirPath, cb) => {
   let mp4_files = glob.sync(path.join(dirPath, "/**/*.mp4"));
   let vtt_files = glob.sync(path.join(dirPath, "/**/*.vtt"));
   let srt_files = glob.sync(path.join(dirPath, "/**/*.srt"));
+  let subtitle_type;
 
-  if ( vtt_files.length < srt_files.length ) {
-    vtt_files = srt_files;
-	}
+  // Subtitle files are written in srt or vtt?
+  if (vtt_files.length < srt_files.length) {
+    subtitle_type = "SRT";
+  } else {
+    subtitle_type = "VTT";
+  }
 
-	mp4_files = naturalSort(mp4_files);
-	
-	vtt_files = validateVTT(mp4_files, vtt_files);
+  mp4_files = naturalSort(mp4_files);
+
+  if (subtitle_type === "SRT") {
+    vtt_files = generateSubtitle(mp4_files, "srt");
+  } else {
+    vtt_files = generateSubtitle(mp4_files, "vtt");
+  }
 
   const newDirPath = dirPath.replace(/\\/g, "/");
   writeListFile(mp4_files, "mp4_files", "list_mp4.js", newDirPath);
-
-  if (vtt_files.length > 0) {
-    writeListFile(vtt_files, "vtt_files", "list_vtt.js", newDirPath);
-  } else {
-    writeListFile([], "vtt_files", "list_vtt.js", newDirPath);
-  }
+  writeListFile(vtt_files, "subtitles", "list_subtitle.js", newDirPath);
 
   cb({ result: true });
 };
