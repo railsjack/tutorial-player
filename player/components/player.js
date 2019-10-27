@@ -29,7 +29,7 @@ module.exports = class Player {
     var base_dir = Helper.getListDir();
     this.playerUI.preload = true;
     this.playerUI.src = base_dir + "/" + mp4_files[index];
-    this.captionUI.src = base_dir + "/" + vtt_files[index];
+    this.captionUI.src = base_dir + "/" + subtitles[index];
     this.playerUI.textTracks[0].mode = "showing";
     this.titleUI.innerText = Helper.getHumanTitle(mp4_files[index]);
 
